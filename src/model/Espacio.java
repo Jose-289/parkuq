@@ -1,0 +1,56 @@
+package model;
+
+import enums.Estado;
+import enums.TipoEspacio;
+
+public class Espacio {
+    private String codigo;
+    private TipoEspacio tipoEspacio;
+    private Estado estado;
+    private Vehiculo vehiculoAsignado;
+
+    public Espacio(String codigo, TipoEspacio tipoEspacio, Estado estado, Vehiculo vehiculoAsignado){
+        this.codigo = codigo;
+        this.tipoEspacio = tipoEspacio;
+        this.estado = estado;
+        this.vehiculoAsignado = vehiculoAsignado;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public TipoEspacio getTipoEspacio() {
+        return tipoEspacio;
+    }
+
+    public void setTipoEspacio(TipoEspacio tipoEspacio) {
+        this.tipoEspacio = tipoEspacio;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public Vehiculo getVehiculoAsignado() {
+        return vehiculoAsignado;
+    }
+
+    public void setVehiculoAsignado(Vehiculo vehiculoAsignado) {
+        this.vehiculoAsignado = vehiculoAsignado;
+    }
+    @Override
+
+    public String toString(){
+        return "Codigo: "+codigo+" Tipo de espacio: "+tipoEspacio+" Estado: "+estado+" Vehiculo asignado: "+vehiculoAsignado;
+    }
+}
+
