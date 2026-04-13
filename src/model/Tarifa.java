@@ -3,13 +3,14 @@ package model;
 import enums.TipoVehiculo;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Tarifa {
     private TipoVehiculo tipoVehiculo;
-    private LocalDate valorHora;
+    private LocalTime valorHora;
     private double descuento;
 
-    public Tarifa (TipoVehiculo tipoVehiculo, LocalDate valorHora, double descuento){
+    public Tarifa (TipoVehiculo tipoVehiculo, LocalTime valorHora, double descuento){
         this.tipoVehiculo = tipoVehiculo;
         this.valorHora = valorHora;
         this.descuento = descuento;
@@ -22,11 +23,11 @@ public class Tarifa {
         this.tipoVehiculo = tipoVehiculo;
     }
 
-    public LocalDate getValorHora() {
+    public LocalTime getValorHora() {
         return valorHora;
     }
 
-    public void setValorHora(LocalDate valorHora) {
+    public void setValorHora(LocalTime valorHora) {
         this.valorHora = valorHora;
     }
 

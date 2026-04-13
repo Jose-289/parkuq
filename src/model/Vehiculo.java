@@ -2,26 +2,38 @@ package model;
 
 import enums.EstadoVehiculo;
 import enums.TipoVehiculo;
+import interfaces.Util;
 
+import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
-public class Vehiculo {
+public class Vehiculo implements Util {
     private String placa;
     private TipoVehiculo vehiculo;
     private String nombreConductor;
-    private LocalDate horaIngreso;
-    private LocalDate horaSalida;
+    private LocalTime horaIngreso;
+    private LocalTime horaSalida;
     private Espacio espacioAsignado;
     private EstadoVehiculo estadoVehiculo;
 
-    public Vehiculo(String placa, TipoVehiculo vehiculo, String nombreConductor, LocalDate horaIngreso, LocalDate horaSalida, Espacio espacioAsignado, EstadoVehiculo estadoVehiculo) {
+    public Vehiculo(String placa, TipoVehiculo vehiculo, String nombreConductor, LocalTime horaIngreso, LocalTime horaSalida, Espacio espacioAsignado, EstadoVehiculo estadoVehiculo) {
         this.placa = placa;
         this.vehiculo = vehiculo;
         this.nombreConductor = nombreConductor;
         this.horaIngreso = horaIngreso;
         this.horaSalida = horaSalida;
         this.espacioAsignado = espacioAsignado;
+        espacioAsignado.setVehiculoAsignado(this);
         this.estadoVehiculo = estadoVehiculo;
+    }
+
+    @Override
+    public String normalizar(String texto){
+        return Normalizer.normalize(texto,Normalizer.Form.NFD)
+                .replaceAll("\\p{M}","")
+                .replaceAll("\\s+","").trim()
+                .toLowerCase();
     }
 
     public String getPlaca() {
@@ -48,19 +60,19 @@ public class Vehiculo {
         this.nombreConductor = nombreConductor;
     }
 
-    public LocalDate getHoraIngreso() {
+    public LocalTime getHoraIngreso() {
         return horaIngreso;
     }
 
-    public void setHoraIngreso(LocalDate horaIngreso) {
+    public void setHoraIngreso(LocalTime horaIngreso) {
         this.horaIngreso = horaIngreso;
     }
 
-    public LocalDate getHoraSalida() {
+    public LocalTime getHoraSalida() {
         return horaSalida;
     }
 
-    public void setHoraSalida(LocalDate horaSalida) {
+    public void setHoraSalida(LocalTime horaSalida) {
         this.horaSalida = horaSalida;
     }
 

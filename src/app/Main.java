@@ -1,10 +1,9 @@
 package app;
 
-import enums.TipoUsuario;
-import model.Administrador;
-import model.Operador;
-import model.Usuario;
+import enums.*;
+import model.*;
 import services.Parqueadero;
+import java.time.LocalTime;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -12,16 +11,17 @@ public class Main {
     public static void main(String[] args) {
 
         Parqueadero p = new Parqueadero();
-        Usuario s = new Usuario("jose",123, TipoUsuario.DOCENTE);
-        Operador o = new Operador("juan",212,"1256a");
-        Administrador a = new Administrador("luis",145,"1235lk");
-        p.crearUsuario(s);
-        p.listarUsuario();
-        System.out.println(p.buscarUsuario(123));
-        p.listarUsuario();
-        p.actualizarUsuario(s);
-        p.eliminarOperador(146);
-
+        Espacio e = new Espacio("123mil", TipoEspacio.BICICLETA, Estado.DISPONIBLE);
+        Vehiculo v = new Vehiculo("123Ton", TipoVehiculo.MOTO,"Juan", LocalTime.now(),LocalTime.of(14,30),e, EstadoVehiculo.ENTRO);
+        p.crearEspacio(e);
+        System.out.println(p.buscarEspacio("123 M   íl "));
+        p.listarEspacio();
+        p.crearVehiculo(v);
+        p.listarVehiculo();
+        p.actualizarEspacio(e,v);
+        p.actualizarVehiculo(v,e);
+        p.listarVehiculo();
+        p.listarEspacio();
 
 
     }

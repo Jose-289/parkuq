@@ -2,18 +2,29 @@ package model;
 
 import enums.Estado;
 import enums.TipoEspacio;
+import interfaces.Util;
 
-public class Espacio {
+import java.text.Normalizer;
+
+public class Espacio implements Util {
     private String codigo;
     private TipoEspacio tipoEspacio;
     private Estado estado;
     private Vehiculo vehiculoAsignado;
 
-    public Espacio(String codigo, TipoEspacio tipoEspacio, Estado estado, Vehiculo vehiculoAsignado){
+    public Espacio(String codigo, TipoEspacio tipoEspacio, Estado estado){
         this.codigo = codigo;
         this.tipoEspacio = tipoEspacio;
         this.estado = estado;
-        this.vehiculoAsignado = vehiculoAsignado;
+
+    }
+    @Override
+    public String normalizar(String texto){
+        return Normalizer.normalize(texto,Normalizer.Form.NFD)
+                .replaceAll("\\p{M}","")
+                .replaceAll("\\s+","").trim()
+                .toLowerCase();
+
     }
 
     public String getCodigo() {
@@ -50,7 +61,7 @@ public class Espacio {
     @Override
 
     public String toString(){
-        return "Codigo: "+codigo+" Tipo de espacio: "+tipoEspacio+" Estado: "+estado+" Vehiculo asignado: "+vehiculoAsignado;
+        return "Codigo: "+codigo+" Tipo de espacio: "+tipoEspacio+" Estado: "+estado;
     }
 }
 

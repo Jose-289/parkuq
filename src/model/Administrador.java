@@ -1,11 +1,21 @@
 package model;
 
-public class Administrador extends Persona{
+import interfaces.Util;
+
+import java.text.Normalizer;
+
+public class Administrador  extends Persona implements Util {
     private String codigo;
 
     public Administrador (String nombre, int id, String codigo){
         super(nombre, id);
         this.codigo = codigo;
+    }
+    @Override
+    public  String normalizar(String texto){
+        return Normalizer.normalize(texto,Normalizer.Form.NFD)
+                .replaceAll("\\p{M}","")
+                .toLowerCase();
     }
 
     public String getCodigo() {

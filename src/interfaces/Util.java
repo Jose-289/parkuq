@@ -1,5 +1,5 @@
 package interfaces;
 
 public interface Util {
-    String normalizar();
+    String normalizar(String texto);
 }
