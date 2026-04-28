@@ -126,7 +126,7 @@ public class Vehiculo implements Util {
 
     @Override
     public String toString (){
-        return " Placa: "+placa+" \n"+
+        return " Placa: "+(placa != null ? placa : "Este vehiculo no tiene placa")+" \n"+
                 " Tipo de vehiculo: "+vehiculo+" \n"+
                 " Nombre del conductor: "+nombreConductor+" \n"+
                 " Hora de ingreso: "+formatearHora(horaIngreso)+" \n"+

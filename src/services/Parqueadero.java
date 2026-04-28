@@ -322,19 +322,43 @@ public class Parqueadero {
     }
 
     public boolean crearVehiculo(Vehiculo vehiculo) {
-        if (buscarVehiculo(vehiculo.getPlaca()) == null) {
+
+        Vehiculo vehiculoExistente = buscarVehiculo(vehiculo.getPlaca());
+
+        if (vehiculoExistente == null) {
+
             asignarEspacio(vehiculo);
 
-            if(vehiculo.getEspacioAsignado() != null){
+            if (vehiculo.getEspacioAsignado() != null) {
                 vehiculo.getEspacioAsignado().setEstado(Estado.OCUPADO);
             }
+
             vehiculo.setEstadoVehiculo(EstadoVehiculo.ENTRO);
+
             vehiculos.add(vehiculo);
+
             return true;
+
+        } else if (vehiculoExistente.getEstadoVehiculo() == EstadoVehiculo.SALIO) {
+
+            asignarEspacio(vehiculoExistente);
+
+            if (vehiculoExistente.getEspacioAsignado() != null) {
+
+                vehiculoExistente.getEspacioAsignado().setEstado(Estado.OCUPADO);
+
+                vehiculoExistente.setEstadoVehiculo(EstadoVehiculo.ENTRO);
+
+                vehiculoExistente.setHoraIngreso(LocalDateTime.now());
+
+                vehiculoExistente.setHoraSalida(null);
+
+                return true;
+            }
         }
+
         return false;
     }
-
     public boolean crearVehiculo(TipoVehiculo tipoVehiculo, Vehiculo vehiculo){
         if(tipoVehiculo.equals(TipoVehiculo.BICICLETA)){
             asignarEspacio(vehiculo);

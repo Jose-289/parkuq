@@ -1,15 +1,18 @@
 package model;
 
+import utilidades.Roll;
 import utilidades.Util;
 
 import java.text.Normalizer;
 
 public class Administrador  extends Persona implements Util {
     private String codigo;
+    private Roll roll;
 
-    public Administrador (String nombre, int id, String codigo){
+    public Administrador (String nombre, int id, String codigo, Roll roll){
         super(nombre, id);
         this.codigo = codigo;
+        this.roll = roll;
     }
     @Override
     public  String normalizar(String texto){

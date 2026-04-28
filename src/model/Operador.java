@@ -1,15 +1,18 @@
 package model;
 
 import utilidades.Util;
+import utilidades.Roll;
 
 import java.text.Normalizer;
 
 public class Operador extends Persona implements Util {
     private String codigo;
+    private Roll roll;
 
-    public Operador(String nombre, int id, String codigo){
+    public Operador(String nombre, int id, String codigo, Roll roll){
         super(nombre, id);
         this.codigo = codigo;
+        this.roll = roll;
     }
 
     @Override

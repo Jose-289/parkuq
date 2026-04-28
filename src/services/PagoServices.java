@@ -1,5 +1,6 @@
 package services;
 
+import model.Espacio;
 import utilidades.Estado;
 import utilidades.EstadoVehiculo;
 import utilidades.TipoUsuario;
@@ -74,30 +75,41 @@ public class PagoServices {
         }
         return sb.toString();
     }
-
     public double calcularPago(Pago pago) {
-        if(pago != null) {
-            pago.getVehiculo().setHoraSalida(LocalDateTime.now());
-            if(pago.getVehiculo().getTipoUsuario().equals(TipoUsuario.DOCENTE) ||
-            pago.getVehiculo().getTipoUsuario().equals(TipoUsuario.ESTUDIANTE)||
-            pago.getVehiculo().getTipoUsuario().equals(TipoUsuario.FUNCIONARIO)){
-                Duration d = Duration.between(pago.getVehiculo().getHoraIngreso(),pago.getVehiculo().getHoraSalida());
-                long horas = d.toMinutes();
-                long horasCobradas = (horas + 59)/60;
-                pago.getVehiculo().getEspacioAsignado().setEstado(Estado.DISPONIBLE);
-                pago.getVehiculo().getEspacioAsignado().setVehiculoAsignado(null);
-                return horasCobradas *(pago.getTarifa().getValorHora() - pago.getTarifa().getDescuento());
 
-            }else if(pago.getVehiculo().getTipoUsuario().equals(TipoUsuario.INVITADO)){
-                Duration d = Duration.between(pago.getVehiculo().getHoraIngreso(),pago.getVehiculo().getHoraSalida());
-                long horas = d.toMinutes();
-                long horasPorCobrar = (horas + 59)/60;
-                pago.getVehiculo().getEspacioAsignado().setEstado(Estado.DISPONIBLE);
-                pago.getVehiculo().getEspacioAsignado().setVehiculoAsignado(null);
-                return horasPorCobrar * pago.getTarifa().getValorHora();
+        if(pago != null) {
+
+            pago.getVehiculo().setHoraSalida(LocalDateTime.now());
+
+            Duration d = Duration.between(
+                    pago.getVehiculo().getHoraIngreso(),
+                    pago.getVehiculo().getHoraSalida()
+            );
+
+            long minutos = d.toMinutes();
+            long horasCobradas = (minutos + 59) / 60;
+
+            Espacio espacio = pago.getVehiculo().getEspacioAsignado();
+
+            if(espacio != null){
+                espacio.setEstado(Estado.DISPONIBLE);
+                espacio.setVehiculoAsignado(null);
+
+                pago.getVehiculo().setEspacioAsignado(null);
             }
 
+            if(pago.getVehiculo().getTipoUsuario().equals(TipoUsuario.INVITADO)) {
+
+                return horasCobradas * pago.getTarifa().getValorHora();
+
+            } else {
+
+                return horasCobradas *
+                        (pago.getTarifa().getValorHora()
+                                - pago.getTarifa().getDescuento());
+            }
         }
-       return -1;
+
+        return -1;
     }
 }

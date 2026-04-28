@@ -46,5 +46,7 @@ public class Main {
         System.out.println(p.listarEspacio());
         p.crearVehiculo(TipoVehiculo.BICICLETA, v3);
         System.out.println(p.listarVehiculo());
+        p.crearVehiculo(v);
+        System.out.println(p.listarVehiculo());
     }
 }
