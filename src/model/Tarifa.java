@@ -1,19 +1,20 @@
 package model;
 
-import enums.TipoVehiculo;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
+import utilidades.TipoVehiculo;
 
 public class Tarifa {
     private TipoVehiculo tipoVehiculo;
-    private LocalTime valorHora;
+    private double valorHora;
     private double descuento;
 
-    public Tarifa (TipoVehiculo tipoVehiculo, LocalTime valorHora, double descuento){
+    public Tarifa (TipoVehiculo tipoVehiculo, double valorHora, double descuento){
         this.tipoVehiculo = tipoVehiculo;
         this.valorHora = valorHora;
         this.descuento = descuento;
+    }
+    public Tarifa (TipoVehiculo tipoVehiculo, double valorHora){
+        this.tipoVehiculo = tipoVehiculo;
+        this.valorHora = valorHora;
     }
 
     public TipoVehiculo getTipoVehiculo(){
@@ -23,11 +24,11 @@ public class Tarifa {
         this.tipoVehiculo = tipoVehiculo;
     }
 
-    public LocalTime getValorHora() {
+    public double getValorHora() {
         return valorHora;
     }
 
-    public void setValorHora(LocalTime valorHora) {
+    public void setValorHora(double valorHora) {
         this.valorHora = valorHora;
     }
 

@@ -1,24 +1,40 @@
 package model;
 
-import enums.EstadoVehiculo;
-import enums.TipoVehiculo;
-import interfaces.Util;
-
+import utilidades.EstadoVehiculo;
+import utilidades.TipoUsuario;
+import utilidades.TipoVehiculo;
+import utilidades.Util;
 import java.text.Normalizer;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 public class Vehiculo implements Util {
     private String placa;
     private TipoVehiculo vehiculo;
     private String nombreConductor;
-    private LocalTime horaIngreso;
-    private LocalTime horaSalida;
+    private LocalDateTime horaIngreso;
+    private LocalDateTime horaSalida;
     private Espacio espacioAsignado;
     private EstadoVehiculo estadoVehiculo;
+    private TipoUsuario tipoUsuario;
 
-    public Vehiculo(String placa, TipoVehiculo vehiculo, String nombreConductor, LocalTime horaIngreso, LocalTime horaSalida, Espacio espacioAsignado, EstadoVehiculo estadoVehiculo) {
+    public Vehiculo(String placa, TipoVehiculo vehiculo, String nombreConductor, LocalDateTime horaIngreso, TipoUsuario tipoUsuario) {
         this.placa = placa;
+        this.vehiculo = vehiculo;
+        this.nombreConductor = nombreConductor;
+        this.horaIngreso = horaIngreso;
+        this.tipoUsuario = tipoUsuario;
+    }
+    public Vehiculo( TipoVehiculo vehiculo, String nombreConductor, LocalDateTime horaIngreso, TipoUsuario tipoUsuario) {
+        this.vehiculo = vehiculo;
+        this.nombreConductor = nombreConductor;
+        this.horaIngreso = horaIngreso;
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public Vehiculo(TipoVehiculo vehiculo, String nombreConductor, LocalDateTime horaIngreso, LocalDateTime horaSalida, Espacio espacioAsignado, EstadoVehiculo estadoVehiculo,TipoUsuario tipoUsuario){
         this.vehiculo = vehiculo;
         this.nombreConductor = nombreConductor;
         this.horaIngreso = horaIngreso;
@@ -26,7 +42,9 @@ public class Vehiculo implements Util {
         this.espacioAsignado = espacioAsignado;
         espacioAsignado.setVehiculoAsignado(this);
         this.estadoVehiculo = estadoVehiculo;
+        this.tipoUsuario = tipoUsuario;
     }
+
 
     @Override
     public String normalizar(String texto){
@@ -34,6 +52,14 @@ public class Vehiculo implements Util {
                 .replaceAll("\\p{M}","")
                 .replaceAll("\\s+","").trim()
                 .toLowerCase();
+    }
+
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getPlaca() {
@@ -60,19 +86,19 @@ public class Vehiculo implements Util {
         this.nombreConductor = nombreConductor;
     }
 
-    public LocalTime getHoraIngreso() {
+    public LocalDateTime getHoraIngreso() {
         return horaIngreso;
     }
 
-    public void setHoraIngreso(LocalTime horaIngreso) {
+    public void setHoraIngreso(LocalDateTime horaIngreso) {
         this.horaIngreso = horaIngreso;
     }
 
-    public LocalTime getHoraSalida() {
+    public LocalDateTime getHoraSalida() {
         return horaSalida;
     }
 
-    public void setHoraSalida(LocalTime horaSalida) {
+    public void setHoraSalida(LocalDateTime horaSalida) {
         this.horaSalida = horaSalida;
     }
 
@@ -91,14 +117,21 @@ public class Vehiculo implements Util {
     public void setEstadoVehiculo(EstadoVehiculo estadoVehiculo) {
         this.estadoVehiculo = estadoVehiculo;
     }
+
+    public String formatearHora(LocalDateTime hora){
+        DateTimeFormatter formato = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).
+                withLocale(Locale.getDefault());
+        return hora.format(formato);
+    }
+
     @Override
     public String toString (){
         return " Placa: "+placa+" \n"+
                 " Tipo de vehiculo: "+vehiculo+" \n"+
                 " Nombre del conductor: "+nombreConductor+" \n"+
-                " Hora de ingreso: "+horaIngreso+" \n"+
-                " Hora de salida: "+horaSalida+" \n"+
-                " Espacio asignado: "+espacioAsignado+" \n"+
+                " Hora de ingreso: "+formatearHora(horaIngreso)+" \n"+
+                " Hora de salida: "+(horaSalida != null ? formatearHora(horaSalida) : "El vehiculo aun no sale")+" \n"+
+                " Espacio asignado: "+(espacioAsignado != null ? espacioAsignado : "Sin espacio")+" \n"+
                 " Estado del vehiculo: "+estadoVehiculo+" \n";
     }
 }

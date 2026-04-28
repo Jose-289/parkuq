@@ -1,21 +1,20 @@
 package model;
 
-import enums.Estado;
-import enums.TipoEspacio;
-import interfaces.Util;
+import utilidades.Estado;
+import utilidades.TipoVehiculo;
+import utilidades.Util;
 
 import java.text.Normalizer;
 
 public class Espacio implements Util {
     private String codigo;
-    private TipoEspacio tipoEspacio;
+    private TipoVehiculo tipoEspacio;
     private Estado estado;
     private Vehiculo vehiculoAsignado;
 
-    public Espacio(String codigo, TipoEspacio tipoEspacio, Estado estado){
+    public Espacio(String codigo, TipoVehiculo tipoEspacio){
         this.codigo = codigo;
         this.tipoEspacio = tipoEspacio;
-        this.estado = estado;
 
     }
     @Override
@@ -35,11 +34,11 @@ public class Espacio implements Util {
         this.codigo = codigo;
     }
 
-    public TipoEspacio getTipoEspacio() {
+    public TipoVehiculo getTipoEspacio() {
         return tipoEspacio;
     }
 
-    public void setTipoEspacio(TipoEspacio tipoEspacio) {
+    public void setTipoEspacio(TipoVehiculo tipoEspacio) {
         this.tipoEspacio = tipoEspacio;
     }
 

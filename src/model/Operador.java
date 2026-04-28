@@ -1,6 +1,6 @@
 package model;
 
-import interfaces.Util;
+import utilidades.Util;
 
 import java.text.Normalizer;
 

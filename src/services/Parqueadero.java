@@ -1,9 +1,9 @@
 package services;
 
-import enums.*;
+import utilidades.*;
 import model.*;
 import javax.swing.*;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Parqueadero {
@@ -71,7 +71,7 @@ public class Parqueadero {
         this.tarifas = tarifas;
     }
 
-    //CRUD PARA USUARIO
+    // ================ CRUD PARA USUARIO ================
 
     public Usuario buscarUsuario(int id) {
         for (Usuario s : usuarios) {
@@ -82,32 +82,30 @@ public class Parqueadero {
         return null;
     }
 
-    public void crearUsuario(Usuario usuario) {
-        Usuario u = buscarUsuario(usuario.getId());
-        if (u == null) {
+    public boolean crearUsuario(Usuario usuario) {
+        if (buscarUsuario(usuario.getId()) == null){
             usuarios.add(usuario);
+            return true;
         }
+        return false;
     }
 
-    public void listarUsuario() {
+    public String listarUsuario() {
         if (usuarios.isEmpty()) {
-            System.out.println("No hay usuarios registrados");
+            return "No hay usuarios registrados";
         }
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < usuarios.size(); i++) {
-            System.out.println((i + 1) + ". " + usuarios.get(i));
+            sb.append(i + 1).append(". ").append(usuarios.get(i)).append("\n");
         }
+        return sb.toString();
     }
 
-    public void eliminarUsuario(int id) {
-
+    public boolean eliminarUsuario(int id) {
         if (buscarUsuario(id) == null) {
-            System.out.println("El usuario que intenta eliminar no existe");
+           return false;
         } else {
-            usuarios.removeIf(usuario -> {
-                int buscar = usuario.getId();
-                return buscar == id;
-            });
-            System.out.println("El ususario se elimino con exito");
+            return usuarios.removeIf(usuario -> usuario.getId() == id);
         }
     }
 
@@ -130,7 +128,7 @@ public class Parqueadero {
         return s;
     }
 
-    //CRUD PARA OPERADOR
+    // ================ CRUD PARA OPERADOR ================
 
     public Operador buscarOPerador(int id) {
         for (Operador o : operadores) {
@@ -141,32 +139,31 @@ public class Parqueadero {
         return null;
     }
 
-    public void crearOperador(Operador operador) {
-        Operador o = buscarOPerador(operador.getId());
-        if (o == null) {
+    public boolean crearOperador(Operador operador) {
+        if(buscarUsuario(operador.getId()) == null){
             operadores.add(operador);
+            return true;
         }
+        return false;
     }
 
-    public void listarOperador() {
+    public String listarOperador() {
         if (operadores.isEmpty()) {
-            System.out.println("No hay operadores registrados");
+          return "Este operador ya existe";
         }
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < operadores.size(); i++) {
-            System.out.println((i + 1) + ". " + operadores.get(i));
+         sb.append(i + 1).append(". ").append(operadores.get(i)).append("\n");
         }
+        return sb.toString();
     }
 
-    public void eliminarOperador(int id) {
+    public boolean eliminarOperador(int id) {
 
         if (buscarOPerador(id) == null) {
-            System.out.println("El operario que intenta eliminar no existe");
+           return false;
         } else {
-            operadores.removeIf(operador -> {
-                int buscar = operador.getId();
-                return buscar == id;
-            });
-            System.out.println("El operador se elimino con exito");
+           return operadores.removeIf(operador -> operador.getId() == id);
         }
     }
 
@@ -185,7 +182,7 @@ public class Parqueadero {
         return o;
     }
 
-    //CRUD PARA ADMINISTRADOR
+    // ================ CRUD PARA ADMINISTRADOR ================
 
     public Administrador buscarAdministrador(int id) {
         for (Administrador a : administradores) {
@@ -196,31 +193,30 @@ public class Parqueadero {
         return null;
     }
 
-    public void crearAdministrador(Administrador administrador) {
-        Administrador a = buscarAdministrador(administrador.getId());
-        if (a == null) {
+    public boolean crearAdministrador(Administrador administrador) {
+        if (buscarAdministrador(administrador.getId()) == null){
             administradores.add(administrador);
+            return true;
         }
+        return false;
     }
 
-    public void listarAdministrador() {
+    public String listarAdministrador() {
         if (administradores.isEmpty()) {
-            System.out.println("No hay administradores registrados");
+            return "No hay administradores registrados";
         }
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < administradores.size(); i++) {
-            System.out.println((i + 1) + ". " + administradores.get(i));
+            sb.append(i + 1).append(". ").append(administradores.get(i)).append("\n");
         }
+        return sb.toString();
     }
 
-    public void eliminarAdministrador(int id) {
+    public boolean eliminarAdministrador(int id) {
         if (buscarAdministrador(id) == null) {
-            System.out.println("El administrador que intenta eliminar no existe");
+          return false;
         } else {
-            administradores.removeIf(administrador -> {
-                int buscar = administrador.getId();
-                return buscar == id;
-            });
-            System.out.println("El administrador se elimino con exito");
+            return administradores.removeIf(administrador -> administrador.getId() == id);
         }
     }
 
@@ -239,7 +235,7 @@ public class Parqueadero {
         return administrador;
     }
 
-    //CRUD PARA ESPACIO
+    // ================ CRUD PARA ESPACIO ================
 
     public Espacio buscarEspacio(String codigo) {
         for (Espacio e : espacios) {
@@ -250,34 +246,31 @@ public class Parqueadero {
         return null;
     }
 
-    public void crearEspacio(Espacio espacio) {
+    public boolean crearEspacio(Espacio espacio) {
         if (buscarEspacio(espacio.getCodigo()) == null) {
             espacios.add(espacio);
-            System.out.println("El espacio se añadio correctamente");
-        } else {
-            System.out.println("Este espacio ya se encuentra registrado");
+            espacio.setEstado(Estado.DISPONIBLE);
+            return true;
         }
-
+        return false;
     }
 
-    public void listarEspacio() {
+    public String listarEspacio() {
         if (espacios.isEmpty()) {
-            System.out.println("No hay espacios registrados");
+            return "No hay espacios registrados";
         }
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < espacios.size(); i++) {
-            System.out.println((i + 1) + ". " + espacios.get(i));
+           sb.append(i + 1).append(". ").append(espacios.get(i)).append("\n");
         }
+        return sb.toString();
     }
 
-    public void eliminarEspacio(String codigo) {
+    public boolean eliminarEspacio(String codigo) {
         if (buscarEspacio(codigo) == null) {
-            System.out.println("El espacio que intenta eliminar no existe");
+           return false;
         } else {
-            espacios.removeIf(e -> {
-                String buscar = e.getCodigo();
-                return buscar.equalsIgnoreCase(e.normalizar(codigo));
-            });
-            System.out.println("Espacio eliminado correctamente");
+           return espacios.removeIf(e -> e.getCodigo().equalsIgnoreCase(e.normalizar(codigo)));
         }
     }
 
@@ -286,11 +279,11 @@ public class Parqueadero {
             return null;
         } else {
             String codigo = JOptionPane.showInputDialog(null, "Ingrese el nuevo codigo");
-            TipoEspacio tipo = (TipoEspacio) JOptionPane.showInputDialog(null, "Tipos de espacio", "Elija un tipo de espacio",
+            TipoVehiculo tipo = (TipoVehiculo) JOptionPane.showInputDialog(null, "Tipos de espacio", "Elija un tipo de espacio",
                     JOptionPane.QUESTION_MESSAGE,
                     null,
-                    TipoEspacio.values(),
-                    TipoEspacio.values()[0]);
+                    TipoVehiculo.values(),
+                    TipoVehiculo.values()[0]);
             Estado estado = (Estado) JOptionPane.showInputDialog(null, "Estados", "Elija un estado", JOptionPane.QUESTION_MESSAGE,
                     null,
                     Estado.values(),
@@ -303,7 +296,21 @@ public class Parqueadero {
         return espacio;
     }
 
-    // CRUD PARA VEHICULO
+    //================ METODOS PROPIOS DE ESPACIO ================
+
+    public void deshavilitarEspacio(Espacio espacio){
+        if(buscarEspacio(espacio.getCodigo()) != null){
+            espacio.setEstado(Estado.FUERA_DE_SERVICIO);
+        }
+    }
+
+    public void habilitarEspacio(Espacio espacio){
+        if(buscarEspacio(espacio.getCodigo()) != null && espacio.getEstado().equals(Estado.FUERA_DE_SERVICIO)){
+            espacio.setEstado(Estado.DISPONIBLE);
+        }
+    }
+
+    // ================ CRUD PARA VEHICULO ================
 
     public Vehiculo buscarVehiculo(String placa) {
         for (Vehiculo v : vehiculos) {
@@ -314,34 +321,51 @@ public class Parqueadero {
         return null;
     }
 
-    public void crearVehiculo(Vehiculo vehiculo) {
-
+    public boolean crearVehiculo(Vehiculo vehiculo) {
         if (buscarVehiculo(vehiculo.getPlaca()) == null) {
+            asignarEspacio(vehiculo);
+
+            if(vehiculo.getEspacioAsignado() != null){
+                vehiculo.getEspacioAsignado().setEstado(Estado.OCUPADO);
+            }
+            vehiculo.setEstadoVehiculo(EstadoVehiculo.ENTRO);
             vehiculos.add(vehiculo);
-            System.out.println("El vehiculo ha sido añadido");
-        } else {
-            System.out.println("El vehiculo con esta placa ya esta registrado");
+            return true;
         }
+        return false;
     }
 
-    public void listarVehiculo() {
+    public boolean crearVehiculo(TipoVehiculo tipoVehiculo, Vehiculo vehiculo){
+        if(tipoVehiculo.equals(TipoVehiculo.BICICLETA)){
+            asignarEspacio(vehiculo);
+
+            if(vehiculo.getEspacioAsignado() != null){
+                vehiculo.getEspacioAsignado().setEstado(Estado.OCUPADO);
+            }
+            vehiculo.setEstadoVehiculo(EstadoVehiculo.ENTRO);
+            vehiculos.add(vehiculo);
+            return true;
+        }
+        return false;
+    }
+
+
+    public String listarVehiculo() {
         if (vehiculos.isEmpty()) {
-            System.out.println("No hay vehiculos aun");
+            return "No hay vehiculos aun";
         }
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < vehiculos.size(); i++) {
-            System.out.println((i + 1) + ". " + vehiculos.get(i));
+            sb.append(i + 1).append(". ").append(vehiculos.get(i)).append("\n");
         }
+        return sb.toString();
     }
 
-    public void eliminarVehiculo(String placa) {
+    public boolean eliminarVehiculo(String placa) {
         if (buscarVehiculo(placa) == null) {
-            System.out.println("El vehiculo que intenta eliminar no existe");
+           return false;
         } else {
-            vehiculos.removeIf(v -> {
-                String buscar = v.getPlaca();
-                return buscar.equalsIgnoreCase(v.normalizar(placa));
-            });
-            System.out.println("El vehiculo se elimino correctamente");
+           return vehiculos.removeIf(v -> v.getPlaca().equalsIgnoreCase(v.normalizar(placa)));
         }
     }
 
@@ -356,9 +380,9 @@ public class Parqueadero {
                     TipoVehiculo.values()[0]);
             String nombreConductor = JOptionPane.showInputDialog(null, "Ingrese el nuevo nombre del conductor");
             String ingreso = JOptionPane.showInputDialog(null, "digite la hora de ingreso en este formato HH:MM");
-            LocalTime horaIngreso = LocalTime.parse(ingreso);
+            LocalDateTime horaIngreso = LocalDateTime.parse(ingreso);
             String salida = JOptionPane.showInputDialog(null, "digite la hora de salida en este formato HH:MM");
-            LocalTime horaSalida = LocalTime.parse(salida);
+            LocalDateTime horaSalida = LocalDateTime.parse(salida);
             EstadoVehiculo estado = (EstadoVehiculo) JOptionPane.showInputDialog(null, "Estados disponibles ", "Elija un estado", JOptionPane.QUESTION_MESSAGE,
                     null,
                     EstadoVehiculo.values(),
@@ -375,6 +399,83 @@ public class Parqueadero {
         return vehiculo;
     }
 
-    //CRUD PARA TARIFA
+    // ================ METODOS PROPIOS DE VEHICULO ================
+    public Espacio asignarEspacio(Vehiculo v) {
+        for(Espacio e: espacios){
+            if(v.getVehiculo().equals(TipoVehiculo.CARRO) && e.getTipoEspacio().equals(TipoVehiculo.CARRO) && e.getEstado().equals(Estado.DISPONIBLE)){
+                v.setEspacioAsignado(e);
+                e.setVehiculoAsignado(v);
+                return e;
+            }else if(v.getVehiculo().equals(TipoVehiculo.MOTO) && e.getTipoEspacio().equals(TipoVehiculo.MOTO) && e.getEstado().equals(Estado.DISPONIBLE)){
+                v.setEspacioAsignado(e);
+                e.setVehiculoAsignado(v);
+                return e;
+            }else if(v.getVehiculo().equals(TipoVehiculo.BICICLETA) && e.getTipoEspacio().equals(TipoVehiculo.BICICLETA) && e.getEstado().equals(Estado.DISPONIBLE)) {
+                v.setEspacioAsignado(e);
+                e.setVehiculoAsignado(v);
+                return e;
+            }
+        }
+        return null;
+    }
+
+
+    // ================ CRUD PARA TARIFA ================
+
+    public Tarifa buscarTarifa(TipoVehiculo tipoVehiculo) {
+        for (Tarifa t : tarifas) {
+            if (t.getTipoVehiculo().equals(tipoVehiculo)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public Tarifa crearTarifa(Tarifa tarifa) {
+        if (buscarTarifa(tarifa.getTipoVehiculo()) == null) {
+            tarifas.add(tarifa);
+        }
+        return null;
+    }
+
+
+    public String listarTarifa() {
+        if (tarifas.isEmpty()) {
+            return "No hay tarifas registradas aun";
+        }
+        StringBuilder sb =  new StringBuilder();
+        for (int i = 0; i < tarifas.size(); i++) {
+            sb.append(i + 1).append(". ").append(tarifas.get(i)).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public boolean eliminarTarifa(Tarifa tarifa) {
+        if (tarifa != null) {
+            tarifas.remove(tarifa);
+            return true;
+        }
+        return false;
+    }
+
+    public Tarifa actualizarTarifa(Tarifa tarifa) {
+        TipoVehiculo tipo = (TipoVehiculo) JOptionPane.showInputDialog(null, "Elija un tipo de vehicilo", "Tipos de vehiculo",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                TipoVehiculo.values(),
+                TipoVehiculo.values()[0]);
+        String valorHora = JOptionPane.showInputDialog(null, "Ingrese el valor por hora");
+        String descuento = JOptionPane.showInputDialog(null, "Ingrese el valor del descuento");
+        double valor = Double.parseDouble(valorHora);
+        double descuento1 = Double.parseDouble(descuento);
+
+        tarifa.setTipoVehiculo(tipo);
+        tarifa.setValorHora(valor);
+        tarifa.setDescuento(descuento1);
+
+        return tarifa;
+    }
+
+    // ================ METODOS PROPIOS DE TARIFA ================
 
 }

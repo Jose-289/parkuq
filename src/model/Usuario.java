@@ -1,6 +1,6 @@
 package model;
 
-import enums.TipoUsuario;
+import utilidades.TipoUsuario;
 
 public class Usuario extends Persona {
 

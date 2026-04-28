@@ -1,4 +1,4 @@
-package enums;
+package utilidades;
 
 public enum TipoUsuario {
     DOCENTE,
