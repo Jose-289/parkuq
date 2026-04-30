@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class PagoServices {
+public class  PagoServices {
     private ArrayList<Pago> pagos;
     private ArrayList<Tarifa> tarifas;
     private ArrayList<Vehiculo> vehiculos;
