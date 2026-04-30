@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.control.TextField;
 import utilidades.Roll;
 import utilidades.Util;
 
@@ -32,5 +33,13 @@ public class Administrador  extends Persona implements Util {
 
     public String toString(){
         return super.toString()+ " Codigo: "+codigo;
+    }
+
+    public void setRoll(Roll roll) {
+        this.roll = roll;
+    }
+
+    public String getRoll() {
+        return roll.toString();
     }
 }
