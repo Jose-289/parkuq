@@ -9,7 +9,9 @@ import model.Tarifa;
 import model.Vehiculo;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class PagoServices {
@@ -53,11 +55,10 @@ public class PagoServices {
     public void crearPago(Pago pago){
         if (pago != null){
             pagos.add(pago);
+            pago.getVehiculo().setEstadoVehiculo(EstadoVehiculo.SALIO);
+            pago.setValorPagar(calcularPago(pago));
+            pago.setFecha(pago.getVehiculo().getHoraSalida());
         }
-    }
-    public String formatearPago(Pago pago){
-        pago.getVehiculo().setEstadoVehiculo(EstadoVehiculo.SALIO);
-        return "Total a pagar: $"+calcularPago(pago);
     }
 
     public void eliminarPago(Pago pago){
@@ -112,4 +113,50 @@ public class PagoServices {
 
         return -1;
     }
+
+    public double ingresosGeneradosPorDia(LocalDateTime fecha){
+        LocalDate fechaBuscada = fecha.toLocalDate();
+
+        return pagos.stream()
+                .filter(pago -> pago.getFecha().toLocalDate().equals(fechaBuscada))
+                .mapToDouble(Pago::getValorPagar)
+                .sum();
+    }
+
+    public double tiempoPromedioDePermanencia( LocalDateTime fecha){
+        LocalDate fechaBuscada = fecha.toLocalDate();
+
+        return pagos.stream()
+                .filter(pago -> pago.getFecha().toLocalDate().equals(fechaBuscada))
+                .mapToLong(pago -> Duration.between(pago.getVehiculo().getHoraIngreso(), pago.getFecha()).toHours())
+                .average()
+                .orElse(0.0);
+    }
+    public double ingresosGeneradosPormes(int anio, int mes){
+        return pagos.stream()
+                .filter(p-> p.getFecha().getYear()== anio && p.getFecha().getMonthValue() == mes)
+                .mapToDouble(Pago::getValorPagar)
+                .sum();
+    }
+
+    public double ingresosGeneradosPorAnio(int anio){
+        return pagos.stream()
+                .filter(p-> p.getFecha().getYear()== anio)
+                .mapToDouble(Pago::getValorPagar)
+                .sum();
+    }
+
+    public double vehiculosQuePermanecireonUnTiempoDado(long horasMinimas) {
+        return pagos.stream()
+                .filter(pago -> {
+                    long horasEstadia = Duration.between(
+                            pago.getVehiculo().getHoraIngreso(),
+                            pago.getFecha().toLocalTime()
+                    ).toHours();
+
+                    return horasEstadia > horasMinimas;
+                })
+                .count();
+    }
+
 }

@@ -6,6 +6,8 @@ import utilidades.TipoVehiculo;
 import utilidades.Util;
 import java.text.Normalizer;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
@@ -118,8 +120,8 @@ public class Vehiculo implements Util {
         this.estadoVehiculo = estadoVehiculo;
     }
 
-    public String formatearHora(LocalDateTime hora){
-        DateTimeFormatter formato = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).
+    public String formatearHora(ZonedDateTime hora){
+        DateTimeFormatter formato = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).
                 withLocale(Locale.getDefault());
         return hora.format(formato);
     }
@@ -129,8 +131,8 @@ public class Vehiculo implements Util {
         return " Placa: "+(placa != null ? placa : "Este vehiculo no tiene placa")+" \n"+
                 " Tipo de vehiculo: "+vehiculo+" \n"+
                 " Nombre del conductor: "+nombreConductor+" \n"+
-                " Hora de ingreso: "+formatearHora(horaIngreso)+" \n"+
-                " Hora de salida: "+(horaSalida != null ? formatearHora(horaSalida) : "El vehiculo aun no sale")+" \n"+
+                " Hora de ingreso: "+formatearHora(horaIngreso.atZone(ZoneId.systemDefault()))+" \n"+
+                " Hora de salida: "+(horaSalida != null ? formatearHora(horaSalida.atZone(ZoneId.systemDefault())) : "Sin registro")+" \n"+
                 " Espacio asignado: "+(espacioAsignado != null ? espacioAsignado : "Sin espacio")+" \n"+
                 " Estado del vehiculo: "+estadoVehiculo+" \n";
     }

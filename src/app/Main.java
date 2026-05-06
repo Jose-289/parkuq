@@ -1,11 +1,13 @@
 package app;
 
+import services.VehiculoServices;
 import utilidades.*;
 import model.*;
 import services.PagoServices;
 import services.Parqueadero;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -14,6 +16,7 @@ public class Main {
 
         Parqueadero p = new Parqueadero();
         PagoServices ps = new PagoServices();
+        VehiculoServices vs = new VehiculoServices(p);
         Usuario s = new Usuario("Jose",123,TipoUsuario.ESTUDIANTE);
         Usuario s1 = new Usuario("Jose",1225,TipoUsuario.ESTUDIANTE);
         Espacio espacio = new Espacio("154",TipoVehiculo.MOTO);
@@ -35,9 +38,14 @@ public class Main {
         p.crearVehiculo(v1);
         System.out.println( p.listarVehiculo());
         Pago pago = new Pago(v,tm);
+        Pago pago1 = new Pago(v0,tm);
+        Pago pago2 = new Pago(v1,tc);
         ps.crearPago(pago);
+        ps.crearPago(pago1);
+        ps.crearPago(pago2);
         ps.calcularPago(pago);
-        System.out.println(ps.formatearPago(pago));
+        ps.calcularPago(pago1);
+        ps.calcularPago(pago2);
         System.out.println(ps.listarPago());
         System.out.println(p.listarVehiculo());
         System.out.println(p.crearVehiculo(v0));
@@ -48,5 +56,12 @@ public class Main {
         System.out.println(p.listarVehiculo());
         p.crearVehiculo(v);
         System.out.println(p.listarVehiculo());
+        int vehiculosPorDia = vs.vehiculosIngresadosPorDia(LocalDateTime.of(2026,4,22,10,20));
+        System.out.println(vehiculosPorDia);
+        System.out.println(ps.listarPago());
+        System.out.println("los ingresos del: "+pago.formatearHora(pago.getFecha().atZone(ZoneId.systemDefault()))+" son $"+ps.ingresosGeneradosPorDia(pago.getFecha()));
+        System.out.println(ps.tiempoPromedioDePermanencia(LocalDateTime.now())+" horas");
+        System.out.println(p.listarVehiculo());
+
     }
 }
