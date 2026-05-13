@@ -197,28 +197,31 @@ public class PLogin {
         return listaAdministradores;
     }
     private static void guardarAdministradoresEnArchivo(Administrador administrador) {
-        // ✅ CORREGIDO: Incluye el nombre del archivo
         String ruta = "E:\\INTELIGENT\\Av1\\parkuq\\src\\Controllers\\administradores.txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ruta, true))) {
+            // Concatenamos todo en una sola línea usando el separador "|"
             writer.write(administrador.getNombre() + "|" +
                     administrador.getId() + "|" +
                     administrador.getCodigo() + "|" +
-                    administrador.getRoll());
-            writer.newLine();
+                    administrador.getRoll() + "|" +
+                    administrador.getContrasena()); // <--- Ahora sí se escribe
 
-            System.out.println("✅ Administrador guardado en: " + ruta);
+            writer.newLine(); // Salto de línea para el siguiente registro
+
+            System.out.println("✅ Administrador guardado exitosamente con contraseña.");
         } catch (IOException e) {
-            System.err.println("❌ Error al guardar: " + e.getMessage());
+            System.err.println("❌ Error al guardar en el archivo: " + e.getMessage());
         }
     }
 
     private  Administrador CrearAdministrador() {
-        Administrador administrador = new Administrador(nombreUsuarioField.getText(), ID_VALIDO, CODIGO_VALIDO, Roll.ADMINISTRADOR);
+        Administrador administrador = new Administrador(nombreUsuarioField.getText(), ID_VALIDO, CODIGO_VALIDO, Roll.ADMINISTRADOR, contrasenaField.getText());
         administrador.setNombre(nombreUsuarioField.getText());
         administrador.setCodigo(CODIGO_VALIDO);
         administrador.setId(ID_VALIDO);
         administrador.setRoll(Roll.ADMINISTRADOR);
+        administrador.setContrasena(contrasenaField.getText());
         listaAdministradores.add(administrador);
         guardarAdministradoresEnArchivo(administrador);
         return administrador;
